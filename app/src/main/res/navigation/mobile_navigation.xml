@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_upload"
+        android:name="com.philippeloctaux.epicture.ui.upload.UploadFragment"
+        android:label="@string/title_upload"
+        tools:layout="@layout/fragment_upload" />
+
+    <fragment
         android:id="@+id/navigation_liked"
         android:name="com.philippeloctaux.epicture.ui.liked.LikedFragment"
         android:label="@string/title_liked"
