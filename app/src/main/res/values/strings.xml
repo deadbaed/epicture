@@ -2,4 +2,5 @@
     <string name="app_name">epicture</string>
     <string name="title_home">Home</string>
     <string name="title_liked">Liked</string>
+    <string name="sign_in">Sign in with imgur</string>
 </resources>
