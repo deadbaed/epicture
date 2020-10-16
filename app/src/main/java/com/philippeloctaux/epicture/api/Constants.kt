@@ -6,6 +6,7 @@ class Constants {
         const val CLIENT_ID = "5a6441392bec250"
         const val RESPONSE_TYPE = "token"
         const val APPLICATION_STATE = "what_is_this"
+        const val REDIRECT_URI = "epicture://callback"
         const val SECRET_ID = "abc" // TODO FIXME: find a way to store secret not in code
     }
 }

@@ -26,9 +26,36 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val test: Uri? = intent?.data
-        if (test != null) {
-            Toast.makeText(this, "works", Toast.LENGTH_SHORT).show()
+        // if data is null return immediately
+        val rawData = intent?.data ?: return
+
+        // make sure callback uri is the one we expect
+        if (!rawData.toString().startsWith(Constants.REDIRECT_URI)) {
+            Toast.makeText(this, "An unexpected error happened", Toast.LENGTH_LONG).show()
+            return
         }
+
+        // parse url
+        val uri = Uri.parse(rawData.toString())
+
+        // check if could not sign in
+        val error: String? = uri.getQueryParameter("error")
+        if (error != null) {
+            // pretty error message
+            val errorMessage = when (error) {
+                "access_denied" -> "Access has been denied"
+                else -> "Generic error"
+            }
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // get access token n stuff
+        // access_token
+        // expires_in
+        // token_type
+        // refresh_token
+        // account_username
+        // account_id
     }
 }
