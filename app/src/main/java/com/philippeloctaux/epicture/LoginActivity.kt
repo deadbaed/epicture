@@ -27,20 +27,23 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        // TODO: if signed in check if access_token is still valid
+        // TODO: else get a new one with refresh_token
+
+        // TODO: if signed in redirect to main view now
+
         // if data is null return immediately
         val rawData = intent?.data ?: return
 
         // make sure callback uri is the one we expect
         if (!rawData.toString().startsWith(Constants.REDIRECT_URI)) {
-            Toast.makeText(this, "An unexpected error happened", Toast.LENGTH_LONG).show()
-            return
+            return Toast.makeText(this, "An unexpected error happened", Toast.LENGTH_LONG).show()
         }
 
         // parse uri
         val uri = Uri.parse(rawData.toString())
         if (uri == null) {
-            Toast.makeText(this, "something went wrong", Toast.LENGTH_LONG).show()
-            return
+            return Toast.makeText(this, "something went wrong", Toast.LENGTH_LONG).show()
         }
 
         // check if could not sign in
@@ -51,37 +54,24 @@ class LoginActivity : AppCompatActivity() {
                 "access_denied" -> "Access has been denied"
                 else -> "Generic error"
             }
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-            return
+            return Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         // parse fragments
         // FIXME: can be null
         val fragments = parseUriFragment(uri.fragment)
 
-        // access_token
-        val access_token = fragments?.get("access_token")
-        println("access_token $access_token")
+        // store tokens in preferences
+        val settings = Settings(applicationContext)
+        fragments?.get(settings.accessToken)?.let { settings.setKeyValue(settings.accessToken, it) }
+        fragments?.get(settings.expiresIn)?.let { settings.setKeyValue(settings.expiresIn, it) }
+        fragments?.get(settings.tokenType)?.let { settings.setKeyValue(settings.tokenType, it) }
+        fragments?.get(settings.refreshToken)
+            ?.let { settings.setKeyValue(settings.refreshToken, it) }
+        fragments?.get(settings.accountUsername)
+            ?.let { settings.setKeyValue(settings.accountUsername, it) }
+        fragments?.get(settings.accountId)?.let { settings.setKeyValue(settings.accountId, it) }
 
-        // expires_in
-        val expires_in = fragments?.get("expires_in")
-        println("expires_in $expires_in")
-
-        // token_type
-        val token_type = fragments?.get("token_type")
-        println("token_type $token_type")
-
-        // refresh_token
-        val refresh_token = fragments?.get("refresh_token")
-        println("refresh_token $refresh_token")
-
-        // account_username
-        val account_username = fragments?.get("account_username")
-        println("account_username $account_username")
-
-        // account_id
-        val account_id = fragments?.get("account_id")
-        println("account_id $account_id")
-
+        // TODO: redirect to main view
     }
 }
