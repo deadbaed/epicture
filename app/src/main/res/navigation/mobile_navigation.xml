@@ -5,6 +5,14 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+
+    <fragment
+        android:gravity = "center"
+        android:id="@+id/navigation_account"
+        android:name="com.philippeloctaux.epicture.ui.account.AccountFragment"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.philippeloctaux.epicture.ui.home.HomeFragment"

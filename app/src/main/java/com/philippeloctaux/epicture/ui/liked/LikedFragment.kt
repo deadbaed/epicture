@@ -20,7 +20,7 @@ class LikedFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         likedViewModel =
-                ViewModelProviders.of(this).get(LikedViewModel::class.java)
+            ViewModelProviders.of(this).get(LikedViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
         likedViewModel.text.observe(viewLifecycleOwner, Observer {
