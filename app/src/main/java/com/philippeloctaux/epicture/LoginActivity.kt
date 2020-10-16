@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.philippeloctaux.epicture.api.Constants
+import com.philippeloctaux.epicture.utils.parseUriFragment
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +36,12 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // parse url
+        // parse uri
         val uri = Uri.parse(rawData.toString())
+        if (uri == null) {
+            Toast.makeText(this, "something went wrong", Toast.LENGTH_LONG).show()
+            return
+        }
 
         // check if could not sign in
         val error: String? = uri.getQueryParameter("error")
@@ -50,12 +55,33 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // get access token n stuff
+        // parse fragments
+        // FIXME: can be null
+        val fragments = parseUriFragment(uri.fragment)
+
         // access_token
+        val access_token = fragments?.get("access_token")
+        println("access_token $access_token")
+
         // expires_in
+        val expires_in = fragments?.get("expires_in")
+        println("expires_in $expires_in")
+
         // token_type
+        val token_type = fragments?.get("token_type")
+        println("token_type $token_type")
+
         // refresh_token
+        val refresh_token = fragments?.get("refresh_token")
+        println("refresh_token $refresh_token")
+
         // account_username
+        val account_username = fragments?.get("account_username")
+        println("account_username $account_username")
+
         // account_id
+        val account_id = fragments?.get("account_id")
+        println("account_id $account_id")
+
     }
 }
