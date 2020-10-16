@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_baseline_thumb_up_24"
         android:title="@string/title_liked" />
 
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/title_search" />
+
 </menu>
