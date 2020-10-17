@@ -24,13 +24,23 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun redirectToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
     override fun onResume() {
         super.onResume()
+
+        val settings = Settings(applicationContext)
 
         // TODO: if signed in check if access_token is still valid
         // TODO: else get a new one with refresh_token
 
-        // TODO: if signed in redirect to main view now
+        // if access_token is stored in Settings redirect to main activity
+        if (!settings.getValue(settings.accessToken).isNullOrEmpty()) {
+            redirectToMainActivity()
+        }
 
         // if data is null return immediately
         val rawData = intent?.data ?: return
@@ -62,7 +72,6 @@ class LoginActivity : AppCompatActivity() {
         val fragments = parseUriFragment(uri.fragment)
 
         // store tokens in preferences
-        val settings = Settings(applicationContext)
         fragments?.get(settings.accessToken)?.let { settings.setKeyValue(settings.accessToken, it) }
         fragments?.get(settings.expiresIn)?.let { settings.setKeyValue(settings.expiresIn, it) }
         fragments?.get(settings.tokenType)?.let { settings.setKeyValue(settings.tokenType, it) }
@@ -72,6 +81,7 @@ class LoginActivity : AppCompatActivity() {
             ?.let { settings.setKeyValue(settings.accountUsername, it) }
         fragments?.get(settings.accountId)?.let { settings.setKeyValue(settings.accountId, it) }
 
-        // TODO: redirect to main view
+        // now we are signed in, redirect to main activity
+        redirectToMainActivity()
     }
 }
