@@ -1,32 +1,50 @@
 package com.philippeloctaux.epicture.ui.account
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.philippeloctaux.epicture.LoginActivity
 import com.philippeloctaux.epicture.R
+import com.philippeloctaux.epicture.Settings
+import com.redmadrobot.acronymavatar.AvatarView
 
 class AccountFragment : Fragment() {
-
-    private lateinit var accountViewModel: AccountViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-        accountViewModel =
-            ViewModelProviders.of(this).get(AccountViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_account, container, false)
-        val textView: TextView = root.findViewById(R.id.text_account)
-        accountViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        val view = inflater.inflate(R.layout.fragment_account, container, false)
+
+        // get settings
+        val settings = Settings(this.requireContext())
+
+        // set avatar
+        settings.getValue(settings.accountUsername)?.let {
+            view.findViewById<AvatarView>(R.id.user_avatar).setText(
+                it
+            )
+        }
+
+        // display username
+        val username: TextView = view.findViewById(R.id.username)
+        username.text = settings.getValue(settings.accountUsername)
+
+        // sign out
+        val signOut : Button = view.findViewById(R.id.sign_out)
+        signOut.setOnClickListener {
+            // clear settings
+            settings.clear()
+
+            // redirect to login activity
+            startActivity(Intent(this.requireContext(), LoginActivity::class.java))
+        }
+
+        return view
     }
 }
