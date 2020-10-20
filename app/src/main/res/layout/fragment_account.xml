@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.redmadrobot.acronymavatar.AvatarView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
             android:layout_width="128dp"
             android:layout_height="128dp"
@@ -30,5 +30,16 @@
             android:text="@string/sign_out"
             app:layout_constraintStart_toStartOf="@+id/username"
             app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_avatar"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

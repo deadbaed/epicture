@@ -6,8 +6,6 @@
     <string name="title_upload">Upload</string>
     <string name="title_search">Search</string>
     <string name="title_account">Account</string>
-
-    <string name="title_test">TEST</string>
     <string name="sign_out">Sign out</string>
     <string name="username_placeholder">username goes here</string>
 </resources>
