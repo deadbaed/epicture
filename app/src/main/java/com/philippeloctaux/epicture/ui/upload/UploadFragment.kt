@@ -37,7 +37,7 @@ class UploadFragment : Fragment() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        startActivityForResult(intent, IMAGE_SELECTED_CODE)
     }
 
     private fun openCamera() {
@@ -46,17 +46,15 @@ class UploadFragment : Fragment() {
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
         image_uri =
             context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        //camera intent
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, IMAGE_PICK_CODE)
+        startActivityForResult(cameraIntent, IMAGE_TAKE_CODE)
     }
 
     companion object {
-        //image pick code
-        private val IMAGE_PICK_CODE = 1000;
-        //Permission code
+        private val IMAGE_SELECTED_CODE = 1000;
         private val PERMISSION_CODE = 1001;
+        private val IMAGE_TAKE_CODE = 1002;
         var image_uri: Uri? = null
     }
 
@@ -72,10 +70,10 @@ class UploadFragment : Fragment() {
         val c_button: Button? = root.findViewById(R.id.camera_button)
 
         if (this.context?.checkPermission("READ_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED ) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), 23)
+            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), PERMISSION_CODE)
         }
         if (this.context?.checkPermission("WRITE_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED ) {
-            requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), 23)
+            requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), PERMISSION_CODE)
         }
         g_button?.setOnClickListener {
             pickImageFromGallery()
@@ -89,9 +87,11 @@ class UploadFragment : Fragment() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_TAKE_CODE){
+            image_view.setImageURI(image_uri)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_SELECTED_CODE){
             image_view.setImageURI(data?.data)
         }
     }
-
 }
