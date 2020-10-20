@@ -60,19 +60,23 @@ class AccountFragment : Fragment() {
             startActivity(Intent(this.requireContext(), LoginActivity::class.java))
         }
 
-        val sglm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        // list of images
         val rv: RecyclerView = view.findViewById(R.id.rv)
-        rv.layoutManager = sglm
+        val imagesPerRow = 3;
+        rv.layoutManager =
+            StaggeredGridLayoutManager(imagesPerRow, StaggeredGridLayoutManager.VERTICAL)
 
         val imageList = ArrayList<String>()
         imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
         imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
+        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
+        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
         imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
         imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
         imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-        val igka = ListImages(this.requireContext(), imageList)
-        rv.adapter = igka
+        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
+        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
+        rv.adapter = ListImages(this.requireContext(), imageList)
 
         return view
     }
