@@ -28,23 +28,25 @@ class AccountFragment : Fragment() {
         val settings = Settings(this.requireContext())
 
         // set avatar
+        val username = settings.getValue(settings.accountUsername).toString()
+        val avatarUrl = "https://imgur.com/user/$username/avatar"
         val userAvatar: ImageView = view.findViewById(R.id.user_avatar)
         Picasso.get()
-            .load("https://brokenfortest")
+            .load(avatarUrl)
             .resize(50, 50)
             .placeholder(
                 AvatarGenerator.avatarImage(
                     this.requireContext(),
                     200,
                     AvatarConstants.CIRCLE,
-                    settings.getValue(settings.accountUsername).toString()
+                    username
                 )
             )
             .into(userAvatar)
 
         // display username
-        val username: TextView = view.findViewById(R.id.username)
-        username.text = settings.getValue(settings.accountUsername)
+        val usernameView: TextView = view.findViewById(R.id.username)
+        usernameView.text = settings.getValue(settings.accountUsername)
 
         // sign out
         val signOut: Button = view.findViewById(R.id.sign_out)
