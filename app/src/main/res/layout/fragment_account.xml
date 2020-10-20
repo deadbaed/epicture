@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.redmadrobot.acronymavatar.AvatarView
+        <ImageView
             android:id="@+id/user_avatar"
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginStart="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/user_avatar_helper_text" />
 
         <TextView
             android:id="@+id/username"

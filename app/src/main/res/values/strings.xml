@@ -10,4 +10,5 @@
     <string name="title_test">TEST</string>
     <string name="sign_out">Sign out</string>
     <string name="username_placeholder">username goes here</string>
+    <string name="user_avatar_helper_text">User avatar</string>
 </resources>

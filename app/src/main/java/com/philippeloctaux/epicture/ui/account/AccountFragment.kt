@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.avatarfirst.avatargenlib.AvatarConstants
+import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.philippeloctaux.epicture.LoginActivity
 import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.Settings
-import com.redmadrobot.acronymavatar.AvatarView
+import com.squareup.picasso.Picasso
 
 class AccountFragment : Fragment() {
     override fun onCreateView(
@@ -25,18 +28,26 @@ class AccountFragment : Fragment() {
         val settings = Settings(this.requireContext())
 
         // set avatar
-        settings.getValue(settings.accountUsername)?.let {
-            view.findViewById<AvatarView>(R.id.user_avatar).setText(
-                it
+        val userAvatar: ImageView = view.findViewById(R.id.user_avatar)
+        Picasso.get()
+            .load("https://brokenfortest")
+            .resize(50, 50)
+            .placeholder(
+                AvatarGenerator.avatarImage(
+                    this.requireContext(),
+                    200,
+                    AvatarConstants.CIRCLE,
+                    settings.getValue(settings.accountUsername).toString()
+                )
             )
-        }
+            .into(userAvatar)
 
         // display username
         val username: TextView = view.findViewById(R.id.username)
         username.text = settings.getValue(settings.accountUsername)
 
         // sign out
-        val signOut : Button = view.findViewById(R.id.sign_out)
+        val signOut: Button = view.findViewById(R.id.sign_out)
         signOut.setOnClickListener {
             // clear settings
             settings.clear()
