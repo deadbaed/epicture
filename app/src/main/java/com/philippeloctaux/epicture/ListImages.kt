@@ -1,11 +1,14 @@
 package com.philippeloctaux.epicture
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.philippeloctaux.epicture.ui.SinglePicture
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_images.view.*
 
@@ -31,7 +34,7 @@ class ListImages(private val c: Context, private val images: ArrayList<String>) 
             .into(holder.iv)
 
         holder.iv.setOnClickListener {
-            //handle click event on image
+            startActivity(c, Intent(c, SinglePicture::class.java), null)
         }
     }
 
