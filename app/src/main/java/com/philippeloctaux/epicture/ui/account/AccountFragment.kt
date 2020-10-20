@@ -9,8 +9,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.avatarfirst.avatargenlib.AvatarConstants
 import com.avatarfirst.avatargenlib.AvatarGenerator
+import com.philippeloctaux.epicture.ListImages
 import com.philippeloctaux.epicture.LoginActivity
 import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.Settings
@@ -36,7 +39,7 @@ class AccountFragment : Fragment() {
             .placeholder(
                 AvatarGenerator.avatarImage(
                     this.requireContext(),
-                    200,
+                    128,
                     AvatarConstants.CIRCLE,
                     username
                 )
@@ -56,6 +59,20 @@ class AccountFragment : Fragment() {
             // redirect to login activity
             startActivity(Intent(this.requireContext(), LoginActivity::class.java))
         }
+
+        val sglm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val rv: RecyclerView = view.findViewById(R.id.rv)
+        rv.layoutManager = sglm
+
+        val imageList = ArrayList<String>()
+        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
+        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
+        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
+        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
+        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
+        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
+        val igka = ListImages(this.requireContext(), imageList)
+        rv.adapter = igka
 
         return view
     }
