@@ -33,7 +33,6 @@ class AccountFragment : Fragment() {
         val userAvatar: ImageView = view.findViewById(R.id.user_avatar)
         Picasso.get()
             .load(avatarUrl)
-            .resize(50, 50)
             .placeholder(
                 AvatarGenerator.avatarImage(
                     this.requireContext(),
