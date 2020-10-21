@@ -69,9 +69,6 @@ class UploadFragment : Fragment() {
         val g_button: Button? = root.findViewById(R.id.gallery_button)
         val c_button: Button? = root.findViewById(R.id.camera_button)
 
-        if (this.context?.checkPermission("READ_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED ) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), PERMISSION_CODE)
-        }
         if (this.context?.checkPermission("WRITE_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED ) {
             requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), PERMISSION_CODE)
         }
