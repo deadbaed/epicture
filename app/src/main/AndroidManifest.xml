@@ -39,6 +39,10 @@
                     android:scheme="epicture" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UploadActivity"
+            android:label="Upload">
+        </activity>
     </application>
 
 </manifest>
