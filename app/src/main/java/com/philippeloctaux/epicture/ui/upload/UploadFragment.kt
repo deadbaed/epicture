@@ -22,13 +22,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.philippeloctaux.epicture.LoginActivity
+import com.philippeloctaux.epicture.MainActivity
 import com.philippeloctaux.epicture.R
+import com.philippeloctaux.epicture.UploadActivity
 import kotlinx.android.synthetic.main.fragment_upload.*
 import java.util.jar.Manifest
 
 
 class UploadFragment : Fragment() {
-
 
 
     private lateinit var uploadViewModel: UploadViewModel
@@ -59,17 +61,16 @@ class UploadFragment : Fragment() {
     }
 
 
-
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_upload, container, false)
         val g_button: Button? = root.findViewById(R.id.gallery_button)
         val c_button: Button? = root.findViewById(R.id.camera_button)
 
-        if (this.context?.checkPermission("WRITE_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED ) {
+        if (this.context?.checkPermission("WRITE_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED) {
             requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), PERMISSION_CODE)
         }
         g_button?.setOnClickListener {
@@ -82,13 +83,17 @@ class UploadFragment : Fragment() {
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_TAKE_CODE){
-            image_view.setImageURI(image_uri)
-        }
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_SELECTED_CODE){
-            image_view.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK) {
+            val IMAGE = "Image"
+            val intent = Intent(this.requireContext(), UploadActivity::class.java)
+            if (requestCode == IMAGE_TAKE_CODE) {
+                intent.apply { putExtra(IMAGE, image_uri.toString()) }
+            }
+            if (requestCode == IMAGE_SELECTED_CODE) {
+                intent.apply { putExtra(IMAGE, data?.data.toString()) }
+            }
+            startActivity(intent)
         }
     }
 }
