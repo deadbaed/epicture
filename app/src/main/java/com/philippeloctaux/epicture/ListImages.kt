@@ -34,7 +34,10 @@ class ListImages(private val c: Context, private val images: ArrayList<String>) 
             .into(holder.iv)
 
         holder.iv.setOnClickListener {
-            startActivity(c, Intent(c, SinglePicture::class.java), null)
+            val intent = Intent(c, SinglePicture::class.java).apply {
+                putExtra("ImageURL", path)
+            }
+            startActivity(c, intent, null)
         }
     }
 

@@ -7,14 +7,23 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.philippeloctaux.epicture.R
+import com.philippeloctaux.epicture.api.Constants
+import com.philippeloctaux.epicture.api.Imgur
+import com.philippeloctaux.epicture.api.types.Image
+import com.philippeloctaux.epicture.api.types.ImageResponse
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Response
 
 
 class SinglePicture : AppCompatActivity() {
+    var image: Image? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_picture)
@@ -23,24 +32,21 @@ class SinglePicture : AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // display image
-        val image: ImageView = findViewById(R.id.imageView)
-        Picasso.get()
-//            .load("https://cannabis-seeds-usa.org/wp-content/uploads/2017/12/big-bud-marijuana-seeds-1_large.jpg")
-            .load("https://licensedproducerscanada.ca/wp-content/uploads/2017/12/GhostGrow_DavinciOG-9437-300x300.png")
-//            .load("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
-            .into(image)
+        // get image hash from URL
+        val imageURL = intent.getStringExtra("ImageURL")
+        val regex =
+            Regex("(https?:)?//(\\w+\\.)?imgur\\.com/(\\S*)(\\.[a-zA-Z]{3})").find(imageURL)!!
+        val (_, _, hash, _) = regex.destructured
+
+        // get & display image
+        val im: ImageView = findViewById(R.id.imageView)
+        val title: TextView = findViewById(R.id.imageTitle)
+        val description: TextView = findViewById(R.id.description)
+        val favButton: ImageButton = findViewById(R.id.favButton)
+        getImage(hash, im, title, description, favButton)
 
         // fav / unfav button
-        val favButton: ImageButton = findViewById(R.id.favButton)
         var fav = false // TODO: get actual value
-
-        // initial value
-        if (fav) {
-            favButton.setImageResource(R.drawable.ic_baseline_favorite_32)
-        } else {
-            favButton.setImageResource(R.drawable.ic_baseline_favorite_border_32)
-        }
 
         // when user clicks fav button
         favButton.setOnClickListener {
@@ -61,8 +67,7 @@ class SinglePicture : AppCompatActivity() {
         copyButton.setOnClickListener {
             // copy text to clipboard
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            // TODO: replace sample text by actual value
-            val clip = ClipData.newPlainText("Image URL", "image url goes here")
+            val clip = ClipData.newPlainText("Image URL", image?.link!!)
             clipboard.primaryClip = clip
 
             // display toast
@@ -80,4 +85,54 @@ class SinglePicture : AppCompatActivity() {
         return true
     }
 
+    private fun getImage(imageHash: String, im: ImageView, title: TextView, description: TextView, favButton: ImageButton) {
+        val client = Imgur.create()
+        val apiRequest =
+            client.getImage("Client-ID " + Constants.CLIENT_ID, imageHash)
+
+        // make request and wait for response
+        apiRequest.enqueue(object : retrofit2.Callback<ImageResponse> {
+
+            // on success
+            override fun onResponse(
+                call: Call<ImageResponse>,
+                response: Response<ImageResponse>
+            ) {
+                // get json response
+                image = response.body()?.data
+
+                // display picture
+                Picasso.get()
+                    .load(image?.link!!)
+                    .into(im)
+
+                // display title
+                if (image?.title == null) {
+                    title.text = "untitled"
+                } else {
+                    title.text = image?.title!!
+                }
+
+                // display description
+                if (image?.description == null) {
+                    description.text = null
+                } else {
+                    description.text = image?.description!!
+                }
+
+                // favorite
+                if (image?.favorite!!) {
+                    favButton.setImageResource(R.drawable.ic_baseline_favorite_32)
+                } else {
+                    favButton.setImageResource(R.drawable.ic_baseline_favorite_border_32)
+                }
+            }
+
+            // on failure
+            override fun onFailure(call: Call<ImageResponse>, t: Throwable) {
+                Toast.makeText(applicationContext, "Failed to get picture", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
 }

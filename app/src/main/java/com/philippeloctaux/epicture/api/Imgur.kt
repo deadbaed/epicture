@@ -1,11 +1,13 @@
 package com.philippeloctaux.epicture.api
 
 import com.philippeloctaux.epicture.api.types.ImageListResponse
+import com.philippeloctaux.epicture.api.types.ImageResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 
 interface Imgur {
     companion object {
@@ -19,4 +21,10 @@ interface Imgur {
 
     @GET("account/me/images")
     fun getAccountImages(@Header("Authorization") accessToken: String): Call<ImageListResponse>
+
+    @GET("image/{hash}")
+    fun getImage(
+        @Header("Authorization") clientId: String,
+        @Path("hash", encoded = true) hash: String,
+    ): Call<ImageResponse>
 }
