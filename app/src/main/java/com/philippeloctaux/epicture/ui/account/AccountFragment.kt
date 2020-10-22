@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,9 +18,17 @@ import com.philippeloctaux.epicture.ListImages
 import com.philippeloctaux.epicture.LoginActivity
 import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.Settings
+import com.philippeloctaux.epicture.api.Imgur
+import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Response
+import java.util.ArrayList
 
 class AccountFragment : Fragment() {
+
+    var rv: RecyclerView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,23 +70,50 @@ class AccountFragment : Fragment() {
         }
 
         // list of images
-        val rv: RecyclerView = view.findViewById(R.id.rv)
-        val imagesPerRow = 3;
-        rv.layoutManager =
+        rv = view.findViewById(R.id.rv)
+        val imagesPerRow = 3
+        rv?.layoutManager =
             StaggeredGridLayoutManager(imagesPerRow, StaggeredGridLayoutManager.VERTICAL)
 
-        val imageList = ArrayList<String>()
-        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
-        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
-        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
-        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
-        imageList.add("https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-        imageList.add("https://cdn.vox-cdn.com/uploads/chorus_image/image/64128118/ap18334761046478_e1543773418361.0.jpg")
-        imageList.add("https://cdn.cnn.com/cnnnext/dam/assets/191031084204-marijuana-flower-stock.jpg")
-        rv.adapter = ListImages(this.requireContext(), imageList)
+        getAccountImages()
 
         return view
+    }
+
+    private fun getAccountImages() {
+        val client = Imgur.create()
+        val settings = Settings(this.requireContext())
+        val apiRequest =
+            client.getAccountImages("Bearer " + settings.getValue(settings.accessToken))
+
+        // make request and wait for response
+        apiRequest.enqueue(object : retrofit2.Callback<ImageListResponse> {
+
+            // on success
+            override fun onResponse(
+                call: Call<ImageListResponse>,
+                response: Response<ImageListResponse>
+            ) {
+                // get json response
+                val rawImageList = response.body()?.data
+                val imageList = ArrayList<String>()
+
+                if (rawImageList != null) {
+                    for (image in rawImageList) {
+                        // add url of each image to list
+                        imageList.add(image.link!!)
+                    }
+                }
+
+                // display images
+                rv?.adapter = ListImages(requireContext(), imageList)
+            }
+
+            // on failure
+            override fun onFailure(call: Call<ImageListResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Failed to get pictures", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 }
