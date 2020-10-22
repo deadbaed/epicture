@@ -37,7 +37,7 @@ class UploadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
-
+//        File
         val image = intent.getStringExtra("Image")
         image_view.setImageURI(Uri.parse(image))
         val cancel_button: Button? = findViewById(R.id.button_cancel)
@@ -60,10 +60,10 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun UploadImage(image: String, title: String, description: String) {
-        val byteA: ByteArrayOutputStream = ByteArrayOutputStream()
-        image?.compress(Bitmap.CompressFormat.PNG, 100, byteA)
-        val byteArray = byteA.toByteArray()
-        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//        val byteA: ByteArrayOutputStream = ByteArrayOutputStream()
+//        image?.compress(Bitmap.CompressFormat.PNG, 100, byteA)
+//        val byteArray = byteA.toByteArray()
+//        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
         val client = Imgur.create()
         val settings = Settings(applicationContext)
         val apiRequest =
