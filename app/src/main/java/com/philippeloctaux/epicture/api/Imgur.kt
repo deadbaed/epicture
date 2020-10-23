@@ -5,10 +5,12 @@ import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.api.types.ImageResponse
 import com.philippeloctaux.epicture.api.types.UploadResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+
 
 interface Imgur {
     companion object {
@@ -39,13 +41,32 @@ interface Imgur {
         @Header("Authorization") accessToken: String,
     ): Call<ImageListResponse>
 
+//    @Multipart
+//    @POST("upload")
+//    fun uploadImage(
+//        @Header("Authorization") accessToken: String,
+//        @Part image: MultipartBody.Part,
+//        @Part type: String,
+//        @Part title: String,
+//        @Part description: String
+//    ): Call<UploadResponse>
+
     @Multipart
     @POST("upload")
     fun uploadImage(
         @Header("Authorization") accessToken: String,
         @Part image: MultipartBody.Part,
-        @Part type: String,
+        @Part type: MultipartBody.Part?,
         @Part title: String,
         @Part description: String
     ): Call<UploadResponse>
+
+
+    @Multipart
+    @POST("upload")
+    fun uploadOneFile(
+        @Header("Authorization") accessToken: String,
+        @Part body: MultipartBody.Part?,
+    ): Call<UploadResponse>
+
 }
