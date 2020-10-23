@@ -33,4 +33,9 @@ interface Imgur {
     fun getHomePage(
         @Header("Authorization") clientId: String,
     ): Call<GalleryListResponse>
+
+    @GET("account/me/favorites")
+    fun getFavoritesImages(
+        @Header("Authorization") accessToken: String,
+    ): Call<ImageListResponse>
 }
