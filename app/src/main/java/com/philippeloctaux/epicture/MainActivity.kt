@@ -2,8 +2,6 @@ package com.philippeloctaux.epicture
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -42,16 +40,21 @@ class MainActivity : AppCompatActivity() {
     // toolbar creation
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_toolbar, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView
+
+        // TODO: implement the search
         return true
     }
 
     // when an option in the menu is selected
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_search -> {
-                Toast.makeText(this, "search!", Toast.LENGTH_SHORT).show()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_search -> {
+//                Toast.makeText(this, "search!", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }
