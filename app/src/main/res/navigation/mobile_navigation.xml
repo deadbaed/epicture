@@ -31,10 +31,4 @@
         android:label="@string/title_liked"
         tools:layout="@layout/fragment_liked" />
 
-    <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.philippeloctaux.epicture.ui.search.SearchFragment"
-        android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
-
 </navigation>

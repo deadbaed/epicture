@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_account,
                 R.id.navigation_home,
                 R.id.navigation_upload,
-                R.id.navigation_liked,
-                R.id.navigation_search
+                R.id.navigation_liked
             )
         )
 
