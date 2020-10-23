@@ -16,6 +16,7 @@ import com.philippeloctaux.epicture.api.Constants
 import com.philippeloctaux.epicture.api.Imgur
 import com.philippeloctaux.epicture.api.types.Image
 import com.philippeloctaux.epicture.api.types.ImageResponse
+import com.philippeloctaux.epicture.utils.IsImgurImage
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Response
@@ -34,9 +35,7 @@ class SinglePicture : AppCompatActivity() {
 
         // get image hash from URL
         val imageURL = intent.getStringExtra("ImageURL")
-        val regex =
-            Regex("(https?:)?//(\\w+\\.)?imgur\\.com/(\\S*)(\\.[a-zA-Z]{3})").find(imageURL)!!
-        val (_, _, hash, _) = regex.destructured
+        val hash = IsImgurImage(imageURL)!!
 
         // get & display image
         val im: ImageView = findViewById(R.id.imageView)

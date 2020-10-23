@@ -13,6 +13,7 @@ import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.api.Constants
 import com.philippeloctaux.epicture.api.Imgur
 import com.philippeloctaux.epicture.api.types.GalleryListResponse
+import com.philippeloctaux.epicture.utils.IsImgurImage
 import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
@@ -62,7 +63,11 @@ class HomeFragment : Fragment() {
                         if (gallery.images != null) {
                             for (image in gallery.images) {
                                 // add url of each image to list
-                                imageList.add(image.link!!)
+                                if (image.link != null) {
+                                    if (IsImgurImage(image.link) != null) {
+                                        imageList.add(image.link)
+                                    }
+                                }
                             }
                         }
                     }

@@ -13,6 +13,7 @@ import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.Settings
 import com.philippeloctaux.epicture.api.Imgur
 import com.philippeloctaux.epicture.api.types.ImageListResponse
+import com.philippeloctaux.epicture.utils.IsImgurImage
 import retrofit2.Call
 import retrofit2.Response
 
@@ -56,7 +57,9 @@ class LikedFragment : Fragment() {
                 if (rawImageList != null) {
                     for (image in rawImageList) {
                         if (image.link != null) {
-                            imageList.add(image.link)
+                            if (IsImgurImage(image.link) != null) {
+                                imageList.add(image.link)
+                            }
                         }
                     }
                 }
