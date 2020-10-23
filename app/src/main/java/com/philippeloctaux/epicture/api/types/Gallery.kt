@@ -20,6 +20,12 @@ class Gallery(
 }
 
 class GalleryResponse {
+    val data: Gallery? = null
+    val success: Boolean = false
+    val status: Int? = null
+}
+
+class GalleryListResponse {
     val data: List<Gallery>? = null
     val success: Boolean = false
     val status: Int? = null

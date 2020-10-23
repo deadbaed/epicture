@@ -1,5 +1,6 @@
 package com.philippeloctaux.epicture.api
 
+import com.philippeloctaux.epicture.api.types.GalleryListResponse
 import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.api.types.ImageResponse
 import retrofit2.Call
@@ -27,4 +28,9 @@ interface Imgur {
         @Header("Authorization") clientId: String,
         @Path("hash", encoded = true) hash: String,
     ): Call<ImageResponse>
+
+    @GET("gallery/hot/viral/0.json")
+    fun getHomePage(
+        @Header("Authorization") clientId: String,
+    ): Call<GalleryListResponse>
 }
