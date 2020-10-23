@@ -4,14 +4,11 @@ import com.philippeloctaux.epicture.api.types.GalleryListResponse
 import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.api.types.ImageResponse
 import com.philippeloctaux.epicture.api.types.UploadResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Field
+import retrofit2.http.*
 
 interface Imgur {
     companion object {
@@ -42,12 +39,13 @@ interface Imgur {
         @Header("Authorization") accessToken: String,
     ): Call<ImageListResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("upload")
     fun uploadImage(
         @Header("Authorization") accessToken: String,
-        @Field("image") image: String,
-        @Field("title") title: String,
-        @Field("description") description: String
+        @Part image: MultipartBody.Part,
+        @Part type: String,
+        @Part title: String,
+        @Part description: String
     ): Call<UploadResponse>
 }

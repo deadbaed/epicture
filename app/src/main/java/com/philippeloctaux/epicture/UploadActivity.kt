@@ -27,6 +27,7 @@ import com.philippeloctaux.epicture.api.types.UploadResponse
 import com.philippeloctaux.epicture.ui.upload.UploadFragment
 import kotlinx.android.synthetic.main.activity_upload.*
 import kotlinx.android.synthetic.main.fragment_upload.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -85,6 +86,10 @@ class UploadActivity : AppCompatActivity() {
         // Call the Upload with the Image.
         val client = Imgur.create()
         val settings = Settings(applicationContext)
+
+        // TODO: uncomment and rewrite this
+        // -phil
+        /*
         val apiRequest = client.uploadImage(
             "Bearer " + settings.getValue(settings.accessToken),
             resImage,
@@ -121,7 +126,7 @@ class UploadActivity : AppCompatActivity() {
                         .show()
                 }
             })
-        }
+        } */
 
     }
 
