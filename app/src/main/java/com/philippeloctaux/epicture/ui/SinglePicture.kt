@@ -9,8 +9,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.api.Constants
 import com.philippeloctaux.epicture.api.Imgur
@@ -30,7 +30,9 @@ class SinglePicture : AppCompatActivity() {
         setContentView(R.layout.activity_single_picture)
 
         // setup up button to go back to previous activity
-        val actionBar: ActionBar? = supportActionBar
+        val toolbar : Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         // get image hash from URL
