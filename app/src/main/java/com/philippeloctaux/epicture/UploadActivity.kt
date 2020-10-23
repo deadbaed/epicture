@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.app.Fragment
 import android.content.ClipDescription
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Button
 import android.widget.EditText
@@ -25,14 +26,16 @@ import com.philippeloctaux.epicture.ui.upload.UploadFragment
 import kotlinx.android.synthetic.main.activity_upload.*
 import kotlinx.android.synthetic.main.fragment_upload.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.ArrayList
+import java.util.Base64.getEncoder
 
 class UploadActivity : AppCompatActivity() {
 
-    private var my_image: Bitmap? = null
+//    private var my_image: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,33 +63,57 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun UploadImage(image: String, title: String, description: String) {
-//        val byteA: ByteArrayOutputStream = ByteArrayOutputStream()
-//        image?.compress(Bitmap.CompressFormat.PNG, 100, byteA)
-//        val byteArray = byteA.toByteArray()
-//        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        // convert an image : string to Bitmap.
+        val imageBytes = Base64.decode(image, 0)
+        val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+        // Convert a image : Bitmap to Base64.
+        val test: ByteArrayOutputStream = ByteArrayOutputStream()
+        image?.compress(Bitmap.CompressFormat.JPEG, 100, test)
+        val b = test.toByteArray()
+        val resImage = Base64.encodeToString(b, Base64.DEFAULT)
+
+        // Call the Upload with the Image.
         val client = Imgur.create()
         val settings = Settings(applicationContext)
-        val apiRequest =
-            client.uploadImage("Bearer " + settings.getValue(settings.accessToken), image, title, description)
+        val apiRequest = client.uploadImage(
+            "Bearer " + settings.getValue(settings.accessToken),
+            resImage,
+            title,
+            description
+        ).also {
 
-        // make request and wait for response
-        apiRequest.enqueue(object : retrofit2.Callback<UploadResponse> {
+            // make request and wait for response
+            it.enqueue(object : Callback<UploadResponse> {
 
-            // on success
-            override fun onResponse(
-                call: Call<UploadResponse>,
-                response: Response<UploadResponse>
-            ) {
-                // return to home
-                redirectToMainActivity()
-            }
+                // on success
+                override fun onResponse(
+                    call: Call<UploadResponse>,
+                    response: Response<UploadResponse>
+                ) {
+//                    // Check the response to the Upload.
+//                    if (response.body()?.success == null) {
+//                        Toast.makeText(applicationContext, "response == NULL", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//                    else if (response.body()?.success == false) {
+//                        Toast.makeText(applicationContext, "Failed to upload pictures to imgur", Toast.LENGTH_SHORT)
+//                                .show()
+//                    }
+//                    else {
+                        // return to home
+                        redirectToMainActivity()
+//                    }
+                }
 
-            // on failure
-            override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, "Failed to upload pictures", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
+                // on failure
+                override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+                    Toast.makeText(applicationContext, "Failed to upload pictures", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+        }
 
     }
 
