@@ -52,12 +52,12 @@ class SinglePicture : AppCompatActivity() {
         // when user clicks fav button
         favButton.setOnClickListener {
             fav = if (fav) {
+                // TODO: api call unlike
                 favButton.setImageResource(R.drawable.ic_baseline_favorite_border_32)
-                // TODO: api call
                 false
             } else {
+                // TODO: api call like
                 favButton.setImageResource(R.drawable.ic_baseline_favorite_32)
-                // TODO: api call
                 true
             }
         }
