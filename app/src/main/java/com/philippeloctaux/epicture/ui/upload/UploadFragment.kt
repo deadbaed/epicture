@@ -88,11 +88,9 @@ class UploadFragment : Fragment() {
             val IMAGE = "Image"
             val intent = Intent(this.requireContext(), UploadActivity::class.java)
             if (requestCode == IMAGE_TAKE_CODE) {
-//                intent.apply { putExtra(IMAGE, image_uri.toString()) }
                 intent.apply { putExtra(IMAGE, image_uri) }
             }
             if (requestCode == IMAGE_SELECTED_CODE) {
-//                intent.apply { putExtra(IMAGE, data?.data.toString()) }
                 intent.apply { putExtra(IMAGE, data?.data) }
             }
             startActivity(intent)

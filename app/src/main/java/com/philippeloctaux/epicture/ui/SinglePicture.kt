@@ -12,13 +12,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.philippeloctaux.epicture.R
+import com.philippeloctaux.epicture.Settings
 import com.philippeloctaux.epicture.api.Constants
 import com.philippeloctaux.epicture.api.Imgur
+import com.philippeloctaux.epicture.api.types.Basic
 import com.philippeloctaux.epicture.api.types.Image
 import com.philippeloctaux.epicture.api.types.ImageResponse
+import com.philippeloctaux.epicture.api.types.UploadResponse
 import com.philippeloctaux.epicture.utils.IsImgurImage
 import com.squareup.picasso.Picasso
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 
@@ -28,6 +32,10 @@ class SinglePicture : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_picture)
+
+        val imgurApi = Imgur.create()
+        val settings = Settings(applicationContext)
+        val token = settings.getValue(settings.accessToken)
 
         // setup up button to go back to previous activity
         val toolbar : Toolbar = findViewById(R.id.toolbar)
@@ -53,14 +61,45 @@ class SinglePicture : AppCompatActivity() {
         favButton.setOnClickListener {
             fav = if (fav) {
                 // TODO: api call unlike
-                favButton.setImageResource(R.drawable.ic_baseline_favorite_border_32)
+                val call = imgurApi.likeImage("Bearer " + token, hash)
+                call.enqueue(object : Callback<Basic> {
+                    override fun onFailure(call: Call<Basic>, t: Throwable?) {
+                        println("failed")
+                    }
+
+                    override fun onResponse(
+                        call: Call<Basic>,
+                        response: Response<Basic>
+                    ) {
+                        val res = response.body()
+
+                        println(res)
+                        favButton.setImageResource(R.drawable.ic_baseline_favorite_border_32)
+                    }
+                })
                 false
             } else {
-                // TODO: api call like
-                favButton.setImageResource(R.drawable.ic_baseline_favorite_32)
+                val call = imgurApi.likeImage("Bearer " + token, hash)
+                call.enqueue(object : Callback<Basic> {
+                    override fun onFailure(call: Call<Basic>, t: Throwable?) {
+                        println("failed")
+                    }
+
+                    override fun onResponse(
+                        call: Call<Basic>,
+                        response: Response<Basic>
+                    ) {
+                        val res = response.body()
+
+                        println(res)
+                        favButton.setImageResource(R.drawable.ic_baseline_favorite_32)
+                    }
+                })
                 true
             }
         }
+
+
 
         // copy image url button
         val copyButton: ImageButton = findViewById(R.id.copyButton)
@@ -74,6 +113,25 @@ class SinglePicture : AppCompatActivity() {
             // display toast
             Toast.makeText(applicationContext, "Copied image URL to clipboard", Toast.LENGTH_SHORT)
                 .show()
+        }
+
+        val deleteButton: ImageButton = findViewById(R.id.deleteButton)
+        deleteButton.setImageResource(R.drawable.ic_baseline_delete_32)
+        deleteButton.setOnClickListener {
+            val call = imgurApi.deleteImage("Bearer " + token, hash)
+            call.enqueue(object : Callback<Basic> {
+                override fun onFailure(call: Call<Basic>, t: Throwable?) {
+                    println("failed")
+                }
+
+                override fun onResponse(
+                    call: Call<Basic>,
+                    response: Response<Basic>
+                ) {
+                    val res = response.body()
+                    println(res)
+                }
+            })
         }
     }
 

@@ -1,9 +1,6 @@
 package com.philippeloctaux.epicture.api
 
-import com.philippeloctaux.epicture.api.types.GalleryListResponse
-import com.philippeloctaux.epicture.api.types.ImageListResponse
-import com.philippeloctaux.epicture.api.types.ImageResponse
-import com.philippeloctaux.epicture.api.types.UploadResponse
+import com.philippeloctaux.epicture.api.types.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -41,6 +38,18 @@ interface Imgur {
     fun getFavoritesImages(
         @Header("Authorization") accessToken: String,
     ): Call<ImageListResponse>
+
+    @POST("image/{hash}/favorite")
+    fun likeImage(
+        @Header("Authorization") accessToken: String,
+        @Path("hash", encoded = true) hash: String,
+    ): Call<Basic>
+
+    @DELETE("image/{hash}")
+    fun deleteImage(
+        @Header("Authorization") accessToken: String,
+        @Path("hash", encoded = true) hash: String,
+    ): Call<Basic>
 
 //    @Multipart
 //    @POST("upload")
