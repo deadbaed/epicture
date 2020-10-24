@@ -5,6 +5,7 @@ import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.api.types.ImageResponse
 import com.philippeloctaux.epicture.api.types.UploadResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -56,9 +57,9 @@ interface Imgur {
     fun uploadImage(
         @Header("Authorization") accessToken: String,
         @Part image: MultipartBody.Part,
-        @Part type: MultipartBody.Part?,
-        @Part title: String,
-        @Part description: String
+        @Part("type") type: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
     ): Call<UploadResponse>
 
 

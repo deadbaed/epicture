@@ -3,43 +3,24 @@ package com.philippeloctaux.epicture
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
-import android.app.Fragment
-import android.content.ClipDescription
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.provider.MediaStore
-import android.util.Base64
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
-import androidx.fragment.app.FragmentManager
 import androidx.loader.content.CursorLoader
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.api.Imgur
-import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.api.types.UploadResponse
-import com.philippeloctaux.epicture.ui.upload.UploadFragment
 import kotlinx.android.synthetic.main.activity_upload.*
-import kotlinx.android.synthetic.main.fragment_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.ArrayList
-import java.util.Base64.getEncoder
 
 class UploadActivity : AppCompatActivity() {
 
@@ -172,24 +153,40 @@ class UploadActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse(contentResolver.getType(image)), file)
         val imageBody = MultipartBody.Part.createFormData("image", file.toString(), requestFile)
 
+        // TODO: check image type
+
+        val type: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            "file"
+        )
+        val titleForm: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            title
+        )
+        val descriptionForm: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            description
+        )
+
         // Upload une image sans titre ni description
-        val call = imgurApi.uploadOneFile("Bearer " + token, imageBody)
-//        val call = imgurApi.uploadImage("Bearer " + token, imageBody, ????, title, description)
+//        val call = imgurApi.uploadOneFile("Bearer " + token, imageBody)
+        val call =
+            imgurApi.uploadImage("Bearer " + token, imageBody, type, titleForm, descriptionForm)
+        println(call)
 
         call.enqueue(object : Callback<UploadResponse> {
-            override fun onFailure(call: Call<UploadResponse>, t: Throwable?) {}
+            override fun onFailure(call: Call<UploadResponse>, t: Throwable?) {
+                println("failed")
+            }
+
             override fun onResponse(
                 call: Call<UploadResponse>,
                 response: Response<UploadResponse>
             ) {
-                if (response.isSuccessful) {
-                    val res = response.body()
-                    println(res)
+                val res = response.body()
 
-                } else {
-                    val res = response.body()
-                    println(res)
-                }
+                println(res)
+
             }
         })
     }
