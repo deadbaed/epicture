@@ -119,10 +119,7 @@ class UploadActivity : AppCompatActivity() {
                 call: Call<UploadResponse>,
                 response: Response<UploadResponse>
             ) {
-                val res = response.body()
-
-                println(res)
-
+                finish()
             }
         })
     }
