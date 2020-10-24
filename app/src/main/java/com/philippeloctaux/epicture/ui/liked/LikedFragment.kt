@@ -28,6 +28,8 @@ class LikedFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        val settings = Settings(this.requireContext())
+
         // list of images
         rv = view.findViewById(R.id.rv)
         val imagesPerRow = 3
@@ -41,8 +43,8 @@ class LikedFragment : Fragment() {
     }
 
     private fun getFavoritesImages() {
-        val settings = Settings(this.requireContext())
         val client = Imgur.create()
+        val settings = Settings(this.requireContext())
         val apiRequest =
             client.getFavoritesImages("Bearer " + settings.getValue(settings.accessToken))
 

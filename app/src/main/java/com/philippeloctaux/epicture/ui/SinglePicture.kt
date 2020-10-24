@@ -128,8 +128,7 @@ class SinglePicture : AppCompatActivity() {
                     call: Call<Basic>,
                     response: Response<Basic>
                 ) {
-                    val res = response.body()
-                    println(res)
+                    finish()
                 }
             })
         }
