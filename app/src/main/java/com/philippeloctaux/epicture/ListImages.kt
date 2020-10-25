@@ -12,7 +12,7 @@ import com.philippeloctaux.epicture.ui.SinglePicture
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_images.view.*
 
-class ListImages(private val c: Context, private val images: ArrayList<String>) :
+class ListImages(private val c: Context, private val images: ArrayList<String>, private val isAccountFragment: Boolean) :
     RecyclerView.Adapter<ListImages.ColorViewHolder>() {
 
 
@@ -36,6 +36,9 @@ class ListImages(private val c: Context, private val images: ArrayList<String>) 
         holder.iv.setOnClickListener {
             val intent = Intent(c, SinglePicture::class.java).apply {
                 putExtra("ImageURL", path)
+            }
+            if (isAccountFragment) {
+                intent.apply { putExtra("isAccountFragment", true) }
             }
             startActivity(c, intent, null)
         }

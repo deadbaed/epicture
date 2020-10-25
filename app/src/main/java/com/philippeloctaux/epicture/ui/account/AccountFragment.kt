@@ -106,7 +106,7 @@ class AccountFragment : Fragment() {
                 }
 
                 // display images
-                rv?.adapter = ListImages(requireContext(), imageList)
+                rv?.adapter = ListImages(requireContext(), imageList, true)
             }
 
             // on failure

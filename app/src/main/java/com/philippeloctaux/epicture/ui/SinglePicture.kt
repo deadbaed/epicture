@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -42,6 +43,9 @@ class SinglePicture : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // check if we are coming from account fragment
+        val isAccountFragment = intent.getBooleanExtra("isAccountFragment", false)
 
         // get image hash from URL
         val imageURL = intent.getStringExtra("ImageURL")
@@ -115,24 +119,30 @@ class SinglePicture : AppCompatActivity() {
                 .show()
         }
 
-        // delete image url button
+        // display delete button only if we are coming from account fragment
         val deleteButton: ImageButton = findViewById(R.id.deleteButton)
-        deleteButton.setImageResource(R.drawable.ic_baseline_delete_32)
-        deleteButton.setOnClickListener {
-            // delete image via the API
-            val call = imgurApi.deleteImage("Bearer " + token, hash)
-            call.enqueue(object : Callback<Basic> {
-                override fun onFailure(call: Call<Basic>, t: Throwable?) {
-                    println("failed")
-                }
+        if (isAccountFragment) {
+            // delete image url button
+            deleteButton.setImageResource(R.drawable.ic_baseline_delete_32)
+            deleteButton.setOnClickListener {
+                // delete image via the API
+                val call = imgurApi.deleteImage("Bearer " + token, hash)
+                call.enqueue(object : Callback<Basic> {
+                    override fun onFailure(call: Call<Basic>, t: Throwable?) {
+                        println("failed")
+                    }
 
-                override fun onResponse(
-                    call: Call<Basic>,
-                    response: Response<Basic>
-                ) {
-                    finish()
-                }
-            })
+                    override fun onResponse(
+                        call: Call<Basic>,
+                        response: Response<Basic>
+                    ) {
+                        finish()
+                    }
+                })
+            }
+        } else {
+            // hide delete button
+            deleteButton.visibility = View.GONE
         }
     }
 

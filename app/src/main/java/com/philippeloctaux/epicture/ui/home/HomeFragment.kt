@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
                 }
 
                 // display images
-                rv?.adapter = ListImages(requireContext(), imageList)
+                rv?.adapter = ListImages(requireContext(), imageList, false)
             }
 
             // on failure
