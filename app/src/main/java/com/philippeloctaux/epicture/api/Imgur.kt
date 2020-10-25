@@ -51,16 +51,6 @@ interface Imgur {
         @Path("hash", encoded = true) hash: String,
     ): Call<Basic>
 
-//    @Multipart
-//    @POST("upload")
-//    fun uploadImage(
-//        @Header("Authorization") accessToken: String,
-//        @Part image: MultipartBody.Part,
-//        @Part type: String,
-//        @Part title: String,
-//        @Part description: String
-//    ): Call<UploadResponse>
-
     @Multipart
     @POST("upload")
     fun uploadImage(
@@ -70,13 +60,4 @@ interface Imgur {
         @Part("title") title: RequestBody,
         @Part("description") description: RequestBody,
     ): Call<UploadResponse>
-
-
-    @Multipart
-    @POST("upload")
-    fun uploadOneFile(
-        @Header("Authorization") accessToken: String,
-        @Part body: MultipartBody.Part?,
-    ): Call<UploadResponse>
-
 }

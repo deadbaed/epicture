@@ -36,7 +36,7 @@ class UploadFragment : Fragment() {
     private lateinit var uploadViewModel: UploadViewModel
 
     private fun pickImageFromGallery() {
-        //Intent to pick image
+        //Intent to pick image from gallery
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_SELECTED_CODE)
@@ -48,11 +48,13 @@ class UploadFragment : Fragment() {
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
         image_uri =
             context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        //Intent to take photo with camera
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
         startActivityForResult(cameraIntent, IMAGE_TAKE_CODE)
     }
 
+    // code for choose activty
     companion object {
         private val IMAGE_SELECTED_CODE = 1000;
         private val PERMISSION_CODE = 1001;
@@ -70,6 +72,7 @@ class UploadFragment : Fragment() {
         val g_button: Button? = root.findViewById(R.id.gallery_button)
         val c_button: Button? = root.findViewById(R.id.camera_button)
 
+        // Check if permissions ok, if not then request
         if (this.context?.checkPermission("WRITE_EXTERNAL_STORAGE", 1, 1) != PERMISSION_GRANTED) {
             requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), PERMISSION_CODE)
         }
@@ -87,6 +90,7 @@ class UploadFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK) {
             val IMAGE = "Image"
             val intent = Intent(this.requireContext(), UploadActivity::class.java)
+            // Intent do send my photo to UploadACtivity
             if (requestCode == IMAGE_TAKE_CODE) {
                 intent.apply { putExtra(IMAGE, image_uri) }
             }

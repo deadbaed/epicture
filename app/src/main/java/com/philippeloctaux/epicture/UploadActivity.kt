@@ -68,8 +68,7 @@ class UploadActivity : AppCompatActivity() {
         }
         return true
     }
-
-
+    
     private fun getRealPathFromURI(contentUri: Uri): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(applicationContext, contentUri, proj, null, null, null)
@@ -83,15 +82,11 @@ class UploadActivity : AppCompatActivity() {
 
     fun UploadImage(image: Uri, title: String, description: String) {
         val imgurApi = Imgur.create()
-//        val imgurApi = RetrofitService().createImgurService()
         val settings = Settings(applicationContext)
-//    val path = image.path
         val token = settings.getValue(settings.accessToken)
         val file = File(getRealPathFromURI(image!!))
         val requestFile = RequestBody.create(MediaType.parse(contentResolver.getType(image)), file)
         val imageBody = MultipartBody.Part.createFormData("image", file.toString(), requestFile)
-
-        // TODO: check image type
 
         val type: RequestBody = RequestBody.create(
             MediaType.parse("text/plain"),

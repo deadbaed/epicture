@@ -115,9 +115,11 @@ class SinglePicture : AppCompatActivity() {
                 .show()
         }
 
+        // delete image url button
         val deleteButton: ImageButton = findViewById(R.id.deleteButton)
         deleteButton.setImageResource(R.drawable.ic_baseline_delete_32)
         deleteButton.setOnClickListener {
+            // delete image via the API
             val call = imgurApi.deleteImage("Bearer " + token, hash)
             call.enqueue(object : Callback<Basic> {
                 override fun onFailure(call: Call<Basic>, t: Throwable?) {

@@ -47,14 +47,4 @@ class MainActivity : AppCompatActivity() {
         // TODO: implement the search
         return true
     }
-
-    // when an option in the menu is selected
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.action_search -> {
-//                Toast.makeText(this, "search!", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 }
