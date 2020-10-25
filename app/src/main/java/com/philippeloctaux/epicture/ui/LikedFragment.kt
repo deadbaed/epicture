@@ -1,4 +1,4 @@
-package com.philippeloctaux.epicture.ui.home
+package com.philippeloctaux.epicture.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,15 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.philippeloctaux.epicture.ListImages
 import com.philippeloctaux.epicture.R
-import com.philippeloctaux.epicture.api.Constants
+import com.philippeloctaux.epicture.Settings
 import com.philippeloctaux.epicture.api.Imgur
-import com.philippeloctaux.epicture.api.types.GalleryListResponse
+import com.philippeloctaux.epicture.api.types.ImageListResponse
 import com.philippeloctaux.epicture.utils.IsImgurImage
 import retrofit2.Call
 import retrofit2.Response
-import java.util.ArrayList
 
-class HomeFragment : Fragment() {
+class LikedFragment : Fragment() {
 
     var rv: RecyclerView? = null
 
@@ -36,38 +35,30 @@ class HomeFragment : Fragment() {
             StaggeredGridLayoutManager(imagesPerRow, StaggeredGridLayoutManager.VERTICAL)
 
         // get images from imgur homepage
-        getHomePage()
+        getFavoritesImages()
 
         return view
     }
 
-    private fun getHomePage() {
+    private fun getFavoritesImages() {
         val client = Imgur.create()
+        val settings = Settings(this.requireContext())
         val apiRequest =
-            client.getHomePage("Client-ID " + Constants.CLIENT_ID)
+            client.getFavoritesImages("Bearer " + settings.getValue(settings.accessToken))
 
-        // make request and wait for response
-        apiRequest.enqueue(object : retrofit2.Callback<GalleryListResponse> {
-
-            // on success
+        apiRequest.enqueue(object : retrofit2.Callback<ImageListResponse> {
             override fun onResponse(
-                call: Call<GalleryListResponse>,
-                response: Response<GalleryListResponse>
+                call: Call<ImageListResponse>,
+                response: Response<ImageListResponse>
             ) {
-                // get json response
-                val rawGalleryList = response.body()?.data
+                val rawImageList = response.body()?.data
                 val imageList = ArrayList<String>()
 
-                if (rawGalleryList != null) {
-                    for (gallery in rawGalleryList) {
-                        if (gallery.images != null) {
-                            for (image in gallery.images) {
-                                // add url of each image to list
-                                if (image.link != null) {
-                                    if (IsImgurImage(image.link) != null) {
-                                        imageList.add(image.link)
-                                    }
-                                }
+                if (rawImageList != null) {
+                    for (image in rawImageList) {
+                        if (image.link != null) {
+                            if (IsImgurImage(image.link) != null) {
+                                imageList.add(image.link)
                             }
                         }
                     }
@@ -78,10 +69,10 @@ class HomeFragment : Fragment() {
             }
 
             // on failure
-            override fun onFailure(call: Call<GalleryListResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ImageListResponse>, t: Throwable) {
                 Toast.makeText(
                     requireContext(),
-                    "Failed to get images from home page",
+                    "Failed to get your favorite pictures",
                     Toast.LENGTH_SHORT
                 )
                     .show()

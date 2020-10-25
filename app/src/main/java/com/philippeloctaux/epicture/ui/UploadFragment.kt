@@ -1,6 +1,5 @@
-package com.philippeloctaux.epicture.ui.upload
+package com.philippeloctaux.epicture.ui
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.ContentValues
@@ -13,27 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import kotlinx.android.synthetic.main.fragment_upload.*
-import android.widget.Toast
-import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
-import com.philippeloctaux.epicture.LoginActivity
-import com.philippeloctaux.epicture.MainActivity
 import com.philippeloctaux.epicture.R
 import com.philippeloctaux.epicture.UploadActivity
-import kotlinx.android.synthetic.main.fragment_upload.*
-import java.util.jar.Manifest
-
 
 class UploadFragment : Fragment() {
-
-
-    private lateinit var uploadViewModel: UploadViewModel
 
     private fun pickImageFromGallery() {
         //Intent to pick image from gallery
@@ -56,9 +39,9 @@ class UploadFragment : Fragment() {
 
     // code for choose activty
     companion object {
-        private val IMAGE_SELECTED_CODE = 1000;
-        private val PERMISSION_CODE = 1001;
-        private val IMAGE_TAKE_CODE = 1002;
+        private val IMAGE_SELECTED_CODE = 1000
+        private val PERMISSION_CODE = 1001
+        private val IMAGE_TAKE_CODE = 1002
         var image_uri: Uri? = null
     }
 

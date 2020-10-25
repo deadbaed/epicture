@@ -1,4 +1,4 @@
-package com.philippeloctaux.epicture.ui.account
+package com.philippeloctaux.epicture.ui
 
 import android.content.Intent
 import android.os.Bundle

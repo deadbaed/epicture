@@ -9,25 +9,25 @@
     <fragment
         android:gravity = "center"
         android:id="@+id/navigation_account"
-        android:name="com.philippeloctaux.epicture.ui.account.AccountFragment"
+        android:name="com.philippeloctaux.epicture.ui.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.philippeloctaux.epicture.ui.home.HomeFragment"
+        android:name="com.philippeloctaux.epicture.ui.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_upload"
-        android:name="com.philippeloctaux.epicture.ui.upload.UploadFragment"
+        android:name="com.philippeloctaux.epicture.ui.UploadFragment"
         android:label="@string/title_upload"
         tools:layout="@layout/fragment_upload" />
 
     <fragment
         android:id="@+id/navigation_liked"
-        android:name="com.philippeloctaux.epicture.ui.liked.LikedFragment"
+        android:name="com.philippeloctaux.epicture.ui.LikedFragment"
         android:label="@string/title_liked"
         tools:layout="@layout/fragment_liked" />
 
